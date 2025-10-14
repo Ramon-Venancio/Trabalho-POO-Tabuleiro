@@ -15,4 +15,4 @@ public abstract class Casa {
     
     public abstract void aplicarEfeito(Jogador jogador, Jogo jogo);
 }
-//Abobora com leite
+//Abobora com leite sdasdasdasd 
