@@ -9,5 +9,13 @@ package com.faculdade.componentes;
  * @author vinan
  */
 public class Baralho {
+    public String[] tiposCartas;
     
+    public Baralho() {
+        tiposCartas = new String[] {"Sortudo", "Azarado", "Normal"};
+    }
+    
+    public String sortearTipo() {
+        return "";
+    }
 }

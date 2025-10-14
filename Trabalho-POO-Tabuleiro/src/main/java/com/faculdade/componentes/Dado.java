@@ -9,5 +9,7 @@ package com.faculdade.componentes;
  * @author vinan
  */
 public class Dado {
-    
+    public int sortearNumero() {
+        return 0;
+    }
 }

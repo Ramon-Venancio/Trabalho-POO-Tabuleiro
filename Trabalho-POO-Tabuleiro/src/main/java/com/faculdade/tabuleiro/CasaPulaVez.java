@@ -11,8 +11,8 @@ import com.faculdade.jogador.Jogador;
  *
  * @author vinan
  */
-public class CasaRevez extends Casa {
-    public CasaRevez(int numero) {
+public class CasaPulaVez extends Casa {
+    public CasaPulaVez(int numero) {
         super(numero);
     }
     

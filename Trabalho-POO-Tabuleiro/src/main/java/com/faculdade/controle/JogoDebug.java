@@ -4,10 +4,30 @@
  */
 package com.faculdade.controle;
 
+import com.faculdade.jogador.Jogador;
+
 /**
  *
  * @author vinan
  */
 public class JogoDebug extends Jogo {
     
+    @Override
+    public void iniciarJogo(int quantidade) {
+        
+    }
+    
+    @Override
+    public void terminarJogo() {
+        
+    }
+
+    @Override
+    public void executarTurno() {
+        
+    }
+    
+    public void pularCasas(Jogador jogador, int posicao) {
+        
+    }
 }

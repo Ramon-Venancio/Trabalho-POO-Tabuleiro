@@ -10,4 +10,18 @@ package com.faculdade.controle;
  */
 public class JogoNormal extends Jogo {
     
+    @Override
+    public void iniciarJogo(int quantidade) {
+        
+    }
+    
+    @Override
+    public void terminarJogo() {
+        
+    }
+    
+    @Override
+    public void executarTurno() {
+        
+    }
 }

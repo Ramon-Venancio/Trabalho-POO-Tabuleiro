@@ -4,10 +4,27 @@
  */
 package com.faculdade.jogador;
 
+import com.faculdade.tabuleiro.Casa;
+
 /**
  *
  * @author vinan
  */
 public abstract class Jogador {
+    protected int idJogador;
+    protected String cor;
+    protected String nome;
+    protected Casa posicao;
+    protected int quantidadePassos;
+    protected String tipo;
+    protected boolean podeJogar;
     
+    public Jogador(int idJogador, String cor, String nome, String tipo) {
+        this.idJogador=idJogador;
+        this.cor=cor;
+        this.nome=nome;
+        this.tipo=tipo;
+    }
+    
+    public abstract int jogarDados();
 }
