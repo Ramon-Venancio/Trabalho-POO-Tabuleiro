@@ -1,14 +1,8 @@
 package com.faculdade.jogador;
 
-<<<<<<< HEAD
-/**
- *
- * @author Antônio Carlos
- */
-public class Jogador {
-=======
+
 public abstract class Jogador {
->>>>>>> ph
+
     protected int idJogador;
     protected String cor;
     protected String nome;
@@ -76,10 +70,7 @@ public abstract class Jogador {
     }
 
     public abstract int jogarDados();
-<<<<<<< HEAD
-    
-}
-=======
+
 
 }
->>>>>>> ph
+

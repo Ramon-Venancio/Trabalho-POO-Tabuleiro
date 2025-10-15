@@ -1,29 +1,14 @@
-<<<<<<< HEAD
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-=======
->>>>>>> ph
+
+
 package com.faculdade.tabuleiro;
 
 import com.faculdade.controle.Jogo;
 import com.faculdade.jogador.Jogador;
 
-<<<<<<< HEAD
-/**
- *
- * @author vinan
- */
-public abstract class Casa {
-    protected int numero;
-    protected ArrayList<Jogador> jogadoresNaCasa;
-=======
 public class Casa {
 
     private final int numero; //Número da casa (Ex: 1 - 40)
     private TipoCasa tipo; //Tipo da casa (NORMAL, SORTE, MÁGICA, ETC.)
->>>>>>> ph
     
     /*
     Construtor - cria uma casa normal com um número específico

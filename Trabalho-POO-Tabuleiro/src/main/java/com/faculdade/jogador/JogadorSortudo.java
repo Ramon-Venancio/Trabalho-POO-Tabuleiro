@@ -2,17 +2,9 @@ package com.faculdade.jogador;
 
 import com.faculdade.componentes.Dado;
 
-<<<<<<< HEAD
-/**
- *
- * @author vinan
- */
-public class JogadorSortudo extends Jogador {
-        public JogadorSortudo(int idJogador, String cor, String nome, String tipo) {
-=======
 public class JogadorSortudo extends Jogador {
         public JogadorSortudo(int idJogador, String cor, String nome) {
->>>>>>> ph
+
         super(idJogador, cor, nome);
     }
     

@@ -2,13 +2,6 @@ package com.faculdade.jogador;
 
 import com.faculdade.componentes.Dado;
 
-<<<<<<< HEAD
-/**
- *
- * @author vinan
- */
-=======
->>>>>>> ph
 import java.util.Random;
 public class JogadorNormal extends Jogador {
         public JogadorNormal(int idJogador, String cor, String nome) {
