@@ -3,13 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.faculdade.componentes;
+import java.util.Random;
 
-/**
- *
- * @author vinan
- */
 public class Dado {
-    public int sortearNumero() {
-        return 0;
+    private static Random random = new Random();
+    public static int rolarDados() {
+        return random.nextInt(6) + 1;
     }
 }
