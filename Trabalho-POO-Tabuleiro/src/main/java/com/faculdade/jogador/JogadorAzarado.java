@@ -9,8 +9,8 @@ package com.faculdade.jogador;
  * @author vinan
  */
 public class JogadorAzarado extends Jogador {
-    public JogadorAzarado(int idJogador, String cor, String nome, String tipo) {
-        super(idJogador, cor, nome, tipo);
+    public JogadorAzarado(int idJogador, String cor, String nome) {
+        super(idJogador, cor, nome);
     }
     
     @Override

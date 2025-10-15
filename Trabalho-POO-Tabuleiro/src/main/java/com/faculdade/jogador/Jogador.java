@@ -16,14 +16,12 @@ public abstract class Jogador {
     protected String nome;
     protected Casa posicao;
     protected int quantidadePassos;
-    protected String tipo;
     protected boolean podeJogar;
     
-    public Jogador(int idJogador, String cor, String nome, String tipo) {
+    public Jogador(int idJogador, String cor, String nome) {
         this.idJogador=idJogador;
         this.cor=cor;
         this.nome=nome;
-        this.tipo=tipo;
     }
     
     public abstract int jogarDados();
