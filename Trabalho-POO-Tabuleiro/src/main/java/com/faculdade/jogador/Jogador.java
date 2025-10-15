@@ -19,7 +19,7 @@ public abstract class Jogador {
         this.perdeRodada = false;
     }
 
-    public int getidJogador(){
+    public int getIdJogador(){
         return idJogador;
     }
 
@@ -70,7 +70,6 @@ public abstract class Jogador {
     }
 
     public abstract int jogarDados();
-
 
 }
 
