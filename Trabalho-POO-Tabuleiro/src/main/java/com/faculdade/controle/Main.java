@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) {
         Jogo jogo = menu();
         while(true) {
-            System.out.println("Quantas pessoas vão jogar? (O minimo é 2 jogadores)");
+            System.out.println("Quantas pessoas vão jogar? (No minimo 2 jogadores e no máximo 6)");
             int quantidadeJogadores = Integer.parseInt(scanner.next());
             if (quantidadeJogadores >= 2 && quantidadeJogadores < 7) {
                 jogo.iniciarJogo(quantidadeJogadores);
@@ -29,11 +29,32 @@ public class Main {
         
         ArrayList<Jogador> jogadores = jogo.getJogadores();
         for (Jogador jogador : jogadores) {
-            System.out.println(jogador);
+            if (jogador instanceof JogadorNormal) {
+                String corJogadorAtual = jogador.getCor();
+                String nomeJogadorAtual = jogador.getNome();
+                System.out.println(corJogadorAtual + nomeJogadorAtual + ANSI_RESET + ": " + "Normal");
+            } else if (jogador instanceof JogadorAzarado) {
+                String corJogadorAtual = jogador.getCor();
+                String nomeJogadorAtual = jogador.getNome();
+                System.out.println(corJogadorAtual + nomeJogadorAtual + ANSI_RESET + ": " + "Azarado");
+            } else if (jogador instanceof JogadorSortudo) {
+                String corJogadorAtual = jogador.getCor();
+                String nomeJogadorAtual = jogador.getNome();
+                System.out.println(corJogadorAtual + nomeJogadorAtual + ANSI_RESET + ": " + "Sortudo");
+            }
         }
-        System.out.println(jogo.getTabuleiro());
-        System.out.println(jogo.getBaralho());
-        System.out.println(jogo.getDado());
+        int countRodadas = 1;
+        while(true) {
+            System.out.println("Rodada " + countRodadas);
+            for (Jogador jogador : jogadores) {
+                String corJogadorAtual = jogador.getCor();
+                String nomeJogadorAtual = jogador.getNome();
+                System.out.println("Vez do jogador " + corJogadorAtual + nomeJogadorAtual + ANSI_RESET + "de jogar");
+                System.err.println("Role seus dados\n(Pressione enter para rolar)");
+                String rodar = scanner.next();
+                jogo.executarTurno();
+            }
+        }
     }
     
     public static Jogo menu() {

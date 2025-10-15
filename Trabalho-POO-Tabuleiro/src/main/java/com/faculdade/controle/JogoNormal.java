@@ -68,7 +68,7 @@ public class JogoNormal extends Jogo {
 
     @Override
     public void executarTurno() {
-
+        
     }
     
     @Override

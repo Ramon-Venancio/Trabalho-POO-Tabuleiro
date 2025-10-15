@@ -4,17 +4,15 @@
  */
 package com.faculdade.jogador;
 
-import com.faculdade.tabuleiro.Casa;
-
 /**
  *
- * @author vinan
+ * @author Antônio Carlos
  */
 public abstract class Jogador {
     protected int idJogador;
     protected String cor;
     protected String nome;
-    protected Casa posicao;
+    protected int posicao;
     protected int quantidadePassos;
     protected boolean podeJogar;
     
@@ -23,6 +21,55 @@ public abstract class Jogador {
         this.cor=cor;
         this.nome=nome;
     }
-    
+
+    public int getidJogador(){
+        return idJogador;
+    }
+
+    public String getCor(){
+        return cor;
+    }
+
+    public void setCor(String cor){
+        this.cor = cor;
+    }
+
+    public String getNome(){
+        return nome;
+    }
+
+    public void setNome(String nome){
+        this.nome = nome;
+    }
+
+    public int getPosicao() {
+        return posicao;
+    }
+
+    public void setPosicao(int posicao) {
+        this.posicao = posicao;
+    }
+
+    public int getJogadas() {
+        return quantidadePassos;
+    }
+
+    public void setJogadas(int jogadas) {
+        this.quantidadePassos = jogadas;
+    }
+
+    public boolean getPerdeRodada() {
+        return podeJogar;
+    }
+
+    public void setPerdeRodada(boolean podeJogar) {
+        this.podeJogar = podeJogar;
+    }
+
+    public void incrementarJogadas(){
+        this.quantidadePassos++;
+    }
+
     public abstract int jogarDados();
+    
 }

@@ -4,6 +4,8 @@
  */
 package com.faculdade.jogador;
 
+import com.faculdade.componentes.Dado;
+
 /**
  *
  * @author vinan
@@ -15,6 +17,11 @@ public class JogadorSortudo extends Jogador {
     
     @Override
     public int jogarDados() {
-        return 0;
+        int soma;
+        do{
+            soma = Dado.rolarDados() + Dado.rolarDados();
+        } while (soma < 7);
+        setJogadas(getJogadas() + 1);
+        return soma;
     }
 }

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.faculdade.tabuleiro;
+
 import com.faculdade.controle.Jogo;
 import com.faculdade.jogador.Jogador;
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public abstract class Casa {
     public Casa(int numero) {
         this.numero=numero;
     }
+
+    // adicionar get e set da posiçao para ser mudado
     
     public abstract void aplicarEfeito(Jogador jogador, Jogo jogo);
 }
