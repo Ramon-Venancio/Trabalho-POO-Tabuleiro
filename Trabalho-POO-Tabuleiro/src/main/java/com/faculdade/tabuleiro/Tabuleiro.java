@@ -1,5 +1,9 @@
 package com.faculdade.tabuleiro;
 
+import com.faculdade.jogador.Jogador;
+import com.faculdade.jogador.JogadorAzarado;
+import com.faculdade.jogador.JogadorNormal;
+import com.faculdade.jogador.JogadorSortudo;
 import java.util.List;
 
 /*
@@ -27,8 +31,8 @@ public class Tabuleiro {
  
     private void inicializarCasas(){
         //Criar casas
-        for(int i = 1; i <= 40; i++){
-            casas[i] = new Casa(i);
+        for(int i = 0; i < Total_Casas; i++){
+            casas[i] = new Casa(i+1);
         }
         
         //Marcar casas especificas
@@ -52,9 +56,9 @@ public class Tabuleiro {
     //Retorna a casa da posição informada 
    
         public Casa getCasa(int posicao) {
-              if (posicao == 1) return casas[1];
-              if (posicao == Total_Casas) return casas[Total_Casas];
-        return casas[posicao];
+              if (posicao < 1) return casas[0];
+              if (posicao > Total_Casas) return casas[Total_Casas - 1];
+        return casas[posicao - 1];
     }
 
     //Move o jogador sem sair do limite de casas
@@ -76,21 +80,40 @@ public class Tabuleiro {
         //Aplica o efeito da casa onde o jogador caiu.
         
         public void aplicarEfeito(Jogador jogador, List<Jogador> todosJogadores){
-            Casa casaAtual = getCasa(jogador.getPosicao);
+            Casa casaAtual = getCasa(jogador.getPosicao());
             TipoCasa tipo = casaAtual.getTipo();
             
-            System.out.printf("%s caiu na casa %d (%s)", jogador.getCor(), casaAtual.getNumero(), tipo);
+            System.out.printf("%s caiu na casa %d (%s)", jogador.getNome(), casaAtual.getNumero(), tipo);
             
             switch(tipo){
                 case PERDE_A_VEZ:
-                    jogador.setPerdeVez(true);
+                    jogador.setPerdeRodada(true);
                     System.out.print("O jogador vai perder a próxima rodada!");
                     break;
                     
-                 case SURPRESA:
-                jogador.trocarTipo(); // método do jogador
-                System.out.println("SURPRESA! Seu tipo mudou!");
+                case SURPRESA:
+                    int tipoSorteado = new java.util.Random().nextInt(3);
+                    Jogador novoJogador;
+
+                switch (tipoSorteado) {
+                    case 0:
+                        novoJogador = new JogadorNormal(jogador.getidJogador(), jogador.getCor(), jogador.getNome()) ;
+                        break;
+                    case 1:
+                        novoJogador = new JogadorSortudo(jogador.getidJogador(), jogador.getCor(), jogador.getNome()) ;
+                        break;
+                    default:
+                        novoJogador = new JogadorAzarado(jogador.getidJogador(), jogador.getCor(), jogador.getNome()) ;
+                        break;
+                }
+
+                    novoJogador.setPosicao(jogador.getPosicao()); //Mantém os dados da posição
+                    novoJogador.setJogadas(jogador.getJogadas()); //Mantém o histórico de jogadas
+                    novoJogador.setPerdeRodada(jogador.isPerdeRodada()); //Recebe as penalidades
+                    todosJogadores.set(todosJogadores.indexOf(jogador), novoJogador); //Substitui o indice do jogador antigo pelo novo
+                    
                 break;
+
 
             case SORTE:
                 int novaPosicao = moverJogador(jogador.getPosicao(), 3);
