@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.faculdade.jogador;
 
 import com.faculdade.componentes.Dado;
 
-/**
- *
- * @author vinan
- */
 import java.util.Random;
 public class JogadorNormal extends Jogador {
         public JogadorNormal(int idJogador, String cor, String nome) {
@@ -17,10 +9,11 @@ public class JogadorNormal extends Jogador {
     }
     
     @Override
-    public int jogarDados() {
-            int soma;
-            soma = Dado.rolarDados() + Dado.rolarDados();
-            setJogadas(getJogadas() + 1);
-            return soma;
+    public int[] jogarDados() {
+        int[] dados = new int[2];
+        dados[0] = Dado.rolarDados();
+        dados[1] = Dado.rolarDados();
+        incrementarJogadas();
+        return dados;
     }
 }

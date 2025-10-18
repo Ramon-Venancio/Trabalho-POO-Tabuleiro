@@ -23,9 +23,7 @@ public abstract class Jogo {
     public abstract void iniciarJogo(int quantidade);
     
     public abstract void terminarJogo();
-    
-    public abstract void executarTurno();
-    
+        
     public abstract Baralho getBaralho();
     
     public abstract Dado getDado();

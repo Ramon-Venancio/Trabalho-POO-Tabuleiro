@@ -1,14 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.faculdade.jogador;
 
-/**
- *
- * @author Antônio Carlos
- */
+import com.faculdade.controle.Jogo;
+
+
 public abstract class Jogador {
+
     protected int idJogador;
     protected String cor;
     protected String nome;
@@ -20,9 +16,10 @@ public abstract class Jogador {
         this.idJogador=idJogador;
         this.cor=cor;
         this.nome=nome;
+        this.podeJogar = true;
     }
 
-    public int getidJogador(){
+    public int getIdJogador(){
         return idJogador;
     }
 
@@ -70,6 +67,33 @@ public abstract class Jogador {
         this.quantidadePassos++;
     }
 
-    public abstract int jogarDados();
+    public abstract int[] jogarDados();
     
+    @Override
+    public boolean equals(Object outro) {
+        // 1. Verifica se são o mesmo objeto na memória (otimização)
+        if (this == outro) {
+            return true;
+        }
+
+        // 2. Verifica se o objeto não é nulo e é do tipo Jogador
+        if (outro == null || getClass() != outro.getClass()) {
+            return false;
+        }
+
+        // 3. Converte para o tipo Jogador
+        Jogador outroJogador = (Jogador) outro;
+
+        // 4. Compara os atributos de VALOR (o que define a igualdade)
+        return idJogador == outroJogador.idJogador; 
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 61 * hash + this.idJogador;
+        return hash;
+    }
+
 }
+

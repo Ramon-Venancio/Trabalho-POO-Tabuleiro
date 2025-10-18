@@ -1,48 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.faculdade.tabuleiro;
-import java.util.ArrayList;
 
-/**
- *
- * @author vinan
- */
+import com.faculdade.controle.*;
+import com.faculdade.jogador.Jogador;
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class Tabuleiro {
-    private ArrayList<Casa> casas;
     
+    public static final int TOTAL_CASAS = 40;
+    private final List<Casa> casas = new ArrayList<>();
+
     public Tabuleiro() {
-        casas = new ArrayList<>(); 
+        for (int i = 0; i <= TOTAL_CASAS; i++) casas.add(new Casa(i));
+        marcarCasas(TipoCasa.PERDE_A_VEZ, 10, 25, 38);
+        marcarCasas(TipoCasa.SURPRESA, 13);
+        marcarCasas(TipoCasa.SORTE, 5, 15, 30);
+        marcarCasas(TipoCasa.VOLTA_AO_INICIO, 17, 27);
+        marcarCasas(TipoCasa.MAGICA, 20, 35);
+    }
+
+    private void marcarCasas(TipoCasa tipo, int... numeros) {
+        for (int numero : numeros) if (numero >= 1 && numero <= casas.size()) casas.get(numero - 1).setTipo(tipo);
+    }
+
+    public Casa getCasa(int posicao) {
+        if (posicao < 1) posicao = 1;
+        if (posicao > casas.size()) posicao = casas.size();
+        return casas.get(posicao);
+    }
+
+    public void moverJogador(Jogador jogador, int passos, List<Jogador> todosJogadores, Jogo jogo) {
+        int novaPosicao;
         
-        for (int i = 0; i < 40; i++) {
-            if (i==9 || i==24 || i==37) {
-                Casa casa = new CasaPulaVez(i);
-                casas.add(casa);
-            } else if (i==12) {
-                Casa casa = new CasaSurpresa(i);
-                casas.add(casa);
-            } else if (i==4 || i==14 || i==29) {
-                Casa casa = new CasaSorte(i);
-                casas.add(casa);
-            } else if (i==16 || i==26) {
-                Casa casa = new CasaRevez(i);
-                casas.add(casa);
-            } else if (i==19 || i==34) {
-                Casa casa = new CasaMagica(i);
-                casas.add(casa);
-            } else {
-                Casa casa = new CasaNormal(i);
-                casas.add(casa);
-            }
+        if (jogo instanceof JogoNormal) {
+            novaPosicao = jogador.getPosicao() + passos;
+        } else {
+            novaPosicao = passos-1;
         }
+        
+        if (novaPosicao < 1) novaPosicao = 1;
+        if (novaPosicao >= casas.size()) novaPosicao = casas.size() - 1;
+        
+        jogador.setPosicao(novaPosicao);
+        Casa casaAtual = getCasa(novaPosicao);
+        casaAtual.aplicarEfeito(jogador, todosJogadores, jogo);
     }
-    
-    public String atualizarCasa() {
-        return "";
-    }
-    
-    public boolean mudarCasa() {
-        return true;
-    }
+
+    public int getTotalCasas() { return casas.size(); }
+    public List<Casa> getCasas() { return casas; }
 }

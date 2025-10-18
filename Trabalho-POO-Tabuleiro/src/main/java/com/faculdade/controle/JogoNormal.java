@@ -65,11 +65,6 @@ public class JogoNormal extends Jogo {
     public void terminarJogo() {
 
     }
-
-    @Override
-    public void executarTurno() {
-        
-    }
     
     @Override
     public Baralho getBaralho() {

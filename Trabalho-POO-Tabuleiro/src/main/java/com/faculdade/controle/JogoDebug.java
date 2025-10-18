@@ -70,11 +70,6 @@ public class JogoDebug extends Jogo {
     }
 
     @Override
-    public void executarTurno() {
-        
-    }
-    
-    @Override
     public Baralho getBaralho() {
         return baralho;
     }
