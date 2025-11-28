@@ -12,6 +12,7 @@
         <exec.mainClass>com.faculdade.controle.Main</exec.mainClass>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <sonar.organization>ramon-venancio</sonar.organization>
     </properties>
 
     <build>
