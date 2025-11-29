@@ -3,12 +3,9 @@ package com.faculdade.controle;
 import com.faculdade.jogador.*;
 import java.util.*;
 
-/**
- * Classe principal do jogo, responsável pela inicialização e loop de controle de I/O.
- */
 public class Main {
 
-    // --- CONSTANTES E VARIÁVEIS ESTÁTICAS (MANTIDAS) ---
+    // --- CONSTANTES E VARIÁVEIS ESTÁTICAS ---
     public static Scanner scanner = new Scanner(System.in);
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String EMOJI_DADO = "\uD83C\uDFB2";
@@ -24,19 +21,14 @@ public class Main {
     public static final String EMOJI_BRILHO = "\u2728";
     public static final String EMOJI_SETA_RETORNO = "\u21A9\uFE0F";
     public static final String EMOJI_SETAS_HORARIAS = "\uD83D\uDD04";
-    
-    // --- NOVO MÉTODO MAIN (Apenas inicializa o jogo) ---
+
+    //Inicializa o jogo
     public static void main(String[] args) {
         Jogo jogo = menu();
         // Chama o método orquestrador que contém a lógica de jogo.
         executarJogo(jogo);
     }
     
-    // --- MÉTODO ORQUESTRADOR REAPROVEITADO (Antigo método Main) ---
-    /**
-     * Orquestra as fases do jogo: Configuração, Loop de Rodadas e Placar.
-     * Complexidade Cognitiva reduzida de 37 para aproximadamente 6.
-     */
     public static void executarJogo(Jogo jogo) {
 
         // 1. Configuração de Jogadores (Quantidade)
@@ -59,9 +51,6 @@ public class Main {
         mostrarPlacar(vencedor, jogadores); 
     }
     
-    // --- MÉTODOS PRIVADOS REFACTORADOS (Lógica Isolada) ---
-    
-
     private static void configurarQuantidadeJogadores(Jogo jogo) {
         while (true) {
             System.out.println("Quantas pessoas vão jogar? (No minimo 2 jogadores e no máximo 6)");
