@@ -18,6 +18,12 @@ public class Main {
     public static final String EMOJI_BANDEIRA = "\uD83C\uDFC1";
     public static final String EMOJI_ALFINETE = "\uD83D\uDCCD";
     public static final String CLEAR_SCREEN = "\u001B[H\u001B[2J";
+    public static final String EMOJI_SETA_DIREITA = "\u27A1";
+    public static final String EMOJI_TREVO = "\uD83C\uDF40";
+    public static final String EMOJI_ROSTO_CONGELADO = "\uD83E\uDD76";
+    public static final String EMOJI_BRILHO = "\u2728";
+    public static final String EMOJI_SETA_RETORNO = "\u21A9\uFE0F";
+    public static final String EMOJI_SETAS_HORARIAS = "\uD83D\uDD04";
     
     // --- NOVO MÉTODO MAIN (Apenas inicializa o jogo) ---
     public static void main(String[] args) {
@@ -34,30 +40,28 @@ public class Main {
     public static void executarJogo(Jogo jogo) {
 
         // 1. Configuração de Jogadores (Quantidade)
-        configurarQuantidadeJogadores(jogo); // CC transferida para este método
+        configurarQuantidadeJogadores(jogo); 
 
+        //Informa o tamanho da lista
         ArrayList<Jogador> jogadores = jogo.getJogadores();
 
         // 2. Configuração de Nomes dos Jogadores
-        configurarNomes(jogadores); // CC transferida
+        configurarNomes(jogadores);
         
         // 3. Exibição e Inicialização
-        mostrarJogadores(jogadores); // CC transferida
+        mostrarJogadores(jogadores); 
         iniciarJogoUX();
         
         // 4. Loop Principal de Rodadas
-        Jogador vencedor = executarLoopPrincipal(jogo, jogadores); // CC transferida
+        Jogador vencedor = executarLoopPrincipal(jogo, jogadores);
         
         // 5. Exibição Final do Placar
-        mostrarPlacar(vencedor, jogadores); // CC transferida
+        mostrarPlacar(vencedor, jogadores); 
     }
     
     // --- MÉTODOS PRIVADOS REFACTORADOS (Lógica Isolada) ---
     
-    /**
-     * Lida com a I/O para o usuário digitar a quantidade de jogadores e valida a entrada.
-     * Originalmente o primeiro 'while(true)' do método main.
-     */
+
     private static void configurarQuantidadeJogadores(Jogo jogo) {
         while (true) {
             System.out.println("Quantas pessoas vão jogar? (No minimo 2 jogadores e no máximo 6)");
@@ -80,9 +84,6 @@ public class Main {
         }
     }
     
-    /**
-     * Lida com a I/O para o usuário digitar o nome de cada jogador.
-     */
     private static void configurarNomes(ArrayList<Jogador> jogadores) {
         System.out.println("Como se chama cada jogador?");
         for (Jogador jogador : jogadores) {
@@ -96,9 +97,6 @@ public class Main {
         }
     }
 
-    /**
-     * Exibe a lista final dos jogadores configurados.
-     */
     private static void mostrarJogadores(ArrayList<Jogador> jogadores) {
         System.out.println("Jogadores");
         for (Jogador jogador : jogadores) {
@@ -108,18 +106,12 @@ public class Main {
         }
     }
     
-    /**
-     * Lógica de I/O para iniciar o jogo após a configuração.
-     */
     private static void iniciarJogoUX() {
         System.out.println("(Pressione enter para começar o jogo)");
         scanner.nextLine();
         System.out.print(CLEAR_SCREEN);
     }
 
-    /**
-     * Controla o loop principal de rodadas e a transição de turnos.
-     */
     private static Jogador executarLoopPrincipal(Jogo jogo, ArrayList<Jogador> jogadores) {
         if (jogo instanceof JogoDebug) { // Lógica condicional isolada
             System.out.println("\nModo Debug\n(Você pode escolher a posição do jogador em vez de rolar dados)\n");
@@ -153,10 +145,6 @@ public class Main {
         return vencedor;
     }
     
-    /**
-     * Executa a lógica completa de um único turno do jogador (I/O, movimento e verificação de vitória).
-     * Retorna 'true' se o jogador venceu, 'false' caso contrário.
-     */
     private static boolean executarTurno(Jogador jogador, Jogo jogo, ArrayList<Jogador> jogadores) {
         System.out.println("\nVez do jogador " + jogador.getCor() + jogador.getNome() + ANSI_RESET + " de jogar");
         
@@ -180,9 +168,6 @@ public class Main {
         return false;
     }
     
-    /**
-     * Lida com a lógica de movimento, diferenciando JogoNormal de JogoDebug.
-     */
     private static void moverJogador(Jogador jogador, Jogo jogo, ArrayList<Jogador> jogadores) {
         if (jogo instanceof JogoNormal) { // Condicional 1: Movimento Normal (Dados)
             int[] dados = jogador.jogarDados();
@@ -203,9 +188,6 @@ public class Main {
         }
     }
     
-    /**
-     * Exibe a posição atual de todos os jogadores.
-     */
     private static void mostrarPosicoes(ArrayList<Jogador> jogadores) {
         System.out.println("\n\nPosição de cada jogador");
         for (Jogador jogadorMostrado : jogadores) {
@@ -214,9 +196,6 @@ public class Main {
         }
     }
     
-    /**
-     * Exibe o placar final do jogo.
-     */
     private static void mostrarPlacar(Jogador vencedor, ArrayList<Jogador> jogadores) {
         if (vencedor == null) {
             System.out.println("\n\nO jogo terminou sem um vencedor claro.");
@@ -242,8 +221,7 @@ public class Main {
             }
         }
     }
-    
-    // --- MÉTODO MENU (Mantido - Complexidade já é baixa/aceitável) ---
+
     public static Jogo menu() {
         String tracos = "-".repeat(18);
         String linhaSI = String.format("+%s+", tracos);
