@@ -1,21 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.faculdade.controle;
 import com.faculdade.componentes.Baralho;
 import com.faculdade.componentes.Dado;
 import java.util.ArrayList;
+import java.util.List; // Import necessário
 
 import com.faculdade.jogador.*;
 import com.faculdade.tabuleiro.Tabuleiro;
 
-/**
- *
- * @author vinan
- */
 public abstract class Jogo {
-    protected ArrayList<Jogador> jogadores;
+    // CORRIGIDO: Usa a interface List
+    protected List<Jogador> jogadores;
     protected Tabuleiro tabuleiro;
     protected Baralho baralho;
     protected Dado dado;
@@ -30,5 +24,6 @@ public abstract class Jogo {
     
     public abstract Tabuleiro getTabuleiro();
     
-    public abstract ArrayList<Jogador> getJogadores();
+    // CORRIGIDO: Retorna a interface List
+    public abstract List<Jogador> getJogadores();
 }

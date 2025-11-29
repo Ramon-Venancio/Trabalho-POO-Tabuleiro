@@ -1,24 +1,23 @@
 package com.faculdade.componentes;
 import java.util.Random;
 
-
 public class Baralho {
-    public String[] tiposCartas;
+    
+    // 1. MUDANÇA PRINCIPAL: O campo agora é uma constante estática final (public static final)
+    public static final String[] TIPOS_CARTAS = {"Sortudo", "Azarado", "Normal"};
     
     private final Random random = new Random();
     
     public Baralho() {
-        tiposCartas = new String[] {"Sortudo", "Azarado", "Normal"};
+        // 2. MUDANÇA: A inicialização foi removida, pois a constante já é inicializada acima.
     }
     
     public String sortearTipo() {
-        // 1. Determina o número máximo de opções (tamanho do array)
-        int quantidadeDeTipos = tiposCartas.length;
+        // 3. MUDANÇA: O método usa o novo nome da constante: TIPOS_CARTAS
+        int quantidadeDeTipos = TIPOS_CARTAS.length;
         
-        // 2. Sorteia um índice aleatório entre 0 (inclusivo) e quantidadeDeTipos (exclusivo)
         int indiceSorteado = random.nextInt(quantidadeDeTipos);
         
-        // 3. Retorna a String que está na posição sorteada
-        return tiposCartas[indiceSorteado];
+        return TIPOS_CARTAS[indiceSorteado];
     }
 }

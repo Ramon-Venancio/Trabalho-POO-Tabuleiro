@@ -5,6 +5,11 @@ import com.faculdade.controle.Jogo;
 
 public abstract class Jogador {
 
+    // NOVO: Constantes para os tipos de jogador (centralização de strings).
+    public static final String TIPO_NORMAL = "Normal";
+    public static final String TIPO_AZARADO = "Azarado";
+    public static final String TIPO_SORTUDO = "Sortudo";
+    
     protected int idJogador;
     protected String cor;
     protected String nome;

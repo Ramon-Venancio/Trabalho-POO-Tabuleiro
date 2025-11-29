@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.faculdade.controle;
 
 import com.faculdade.componentes.Baralho;
@@ -12,6 +8,8 @@ import com.faculdade.jogador.JogadorNormal;
 import com.faculdade.jogador.JogadorSortudo;
 import com.faculdade.tabuleiro.Tabuleiro;
 import java.util.ArrayList;
+import java.util.List; // Import necessário
+import java.util.Collections; // Import para Collections.unmodifiableList
 
 /**
  *
@@ -21,6 +19,7 @@ public class JogoDebug extends Jogo {
     
     @Override
     public void iniciarJogo(int quantidade) {
+        // CORRIGIDO: O campo é do tipo List, inicializado com ArrayList
         jogadores = new ArrayList<Jogador>();
 
         String[][] nomesCoresJogadores = {
@@ -47,11 +46,12 @@ public class JogoDebug extends Jogo {
             String[] dadosJogador = {nomesCoresJogadores[i][0], nomesCoresJogadores[i][1]};
 
             Jogador jogador = null;
-            if (tipoAleatorio.equals("Normal")) {
+            // CORRIGIDO: Usa as constantes de Jogador.java
+            if (tipoAleatorio.equals(Jogador.TIPO_NORMAL)) {
                 jogador = new JogadorNormal(i, dadosJogador[1], dadosJogador[0]);
-            } else if (tipoAleatorio.equals("Azarado")) {
+            } else if (tipoAleatorio.equals(Jogador.TIPO_AZARADO)) {
                 jogador = new JogadorAzarado(i, dadosJogador[1], dadosJogador[0]);
-            } else if(tipoAleatorio.equals("Sortudo")) {
+            } else if(tipoAleatorio.equals(Jogador.TIPO_SORTUDO)) {
                 jogador = new JogadorSortudo(i, dadosJogador[1], dadosJogador[0]);
             }
 
@@ -66,7 +66,9 @@ public class JogoDebug extends Jogo {
     
     @Override
     public void terminarJogo() {
-        
+        /*
+        * Este método está intencionalmente vazio (Empty Method) na classe JogoDebug
+        */
     }
 
     @Override
@@ -85,11 +87,9 @@ public class JogoDebug extends Jogo {
     }
     
     @Override
-    public ArrayList<Jogador> getJogadores() {
-        return (ArrayList<Jogador>) jogadores.clone();
-    }
-    
-    public void pularCasas(Jogador jogador, int posicao) {
-        
+    // CORRIGIDO: Retorna List<Jogador> (interface) e usa Collections.unmodifiableList
+    public List<Jogador> getJogadores() {
+        // Retorna uma lista não modificável, boa prática para encapsulamento
+        return Collections.unmodifiableList(jogadores);
     }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.faculdade.controle;
 
 import com.faculdade.componentes.*;
@@ -9,6 +5,7 @@ import com.faculdade.jogador.*;
 import com.faculdade.tabuleiro.Tabuleiro;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections; // Import para Collections.unmodifiableList
 
 /**
  *
@@ -18,6 +15,7 @@ public class JogoNormal extends Jogo {
 
     @Override
     public void iniciarJogo(int quantidade) {
+        // CORRIGIDO: O campo é do tipo List, inicializado como ArrayList (implementação)
         jogadores = new ArrayList<Jogador>();
 
         String[][] nomesCoresJogadores = {
@@ -44,11 +42,12 @@ public class JogoNormal extends Jogo {
             String[] dadosJogador = {nomesCoresJogadores[i][0], nomesCoresJogadores[i][1]};
 
             Jogador jogador = null;
-            if (tipoAleatorio.equals("Normal")) {
+            // CORRIGIDO: Usa as constantes de Jogador.java
+            if (tipoAleatorio.equals(Jogador.TIPO_NORMAL)) {
                 jogador = new JogadorNormal(i, dadosJogador[1], dadosJogador[0]);
-            } else if (tipoAleatorio.equals("Azarado")) {
+            } else if (tipoAleatorio.equals(Jogador.TIPO_AZARADO)) {
                 jogador = new JogadorAzarado(i, dadosJogador[1], dadosJogador[0]);
-            } else if(tipoAleatorio.equals("Sortudo")) {
+            } else if(tipoAleatorio.equals(Jogador.TIPO_SORTUDO)) {
                 jogador = new JogadorSortudo(i, dadosJogador[1], dadosJogador[0]);
             }
 
@@ -82,7 +81,9 @@ public class JogoNormal extends Jogo {
     }
     
     @Override
-    public ArrayList<Jogador> getJogadores() {
-        return (ArrayList<Jogador>) jogadores.clone();
+    // CORRIGIDO: Retorna List<Jogador> (interface) e usa Collections.unmodifiableList
+    public List<Jogador> getJogadores() {
+        // Retornar uma lista não modificável é uma boa prática para evitar alterações externas.
+        return Collections.unmodifiableList(jogadores);
     }
 }

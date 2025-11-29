@@ -37,7 +37,9 @@ public class Main {
         configurarQuantidadeJogadores(jogo); 
 
         //Informa o tamanho da lista
-        ArrayList<Jogador> jogadores = jogo.getJogadores();
+        // ✅ CORREÇÃO: Alterado de ArrayList<Jogador> para List<Jogador> 
+        // para corresponder ao retorno de jogo.getJogadores()
+        List<Jogador> jogadores = jogo.getJogadores();
 
         // 2. Configuração de Nomes dos Jogadores
         configurarNomes(jogadores);
@@ -75,7 +77,8 @@ public class Main {
         }
     }
     
-    private static void configurarNomes(ArrayList<Jogador> jogadores) {
+    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
+    private static void configurarNomes(List<Jogador> jogadores) {
         System.out.println("Como se chama cada jogador?");
         for (Jogador jogador : jogadores) {
             System.out.printf("Qual é o nome do %s%d° jogador%s? (Se deixar vazio o nome padrão '%s' será usado)%n", 
@@ -88,7 +91,8 @@ public class Main {
         }
     }
 
-    private static void mostrarJogadores(ArrayList<Jogador> jogadores) {
+    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
+    private static void mostrarJogadores(List<Jogador> jogadores) {
         System.out.println("Jogadores");
         for (Jogador jogador : jogadores) {
             String mostrarJogador = String.format("%d° jogador: %s%s%s", 
@@ -103,7 +107,8 @@ public class Main {
         System.out.print(CLEAR_SCREEN);
     }
 
-    private static Jogador executarLoopPrincipal(Jogo jogo, ArrayList<Jogador> jogadores) {
+    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
+    private static Jogador executarLoopPrincipal(Jogo jogo, List<Jogador> jogadores) {
         if (jogo instanceof JogoDebug) { // Lógica condicional isolada
             System.out.println("\nModo Debug\n(Você pode escolher a posição do jogador em vez de rolar dados)\n");
         }
@@ -136,7 +141,8 @@ public class Main {
         return vencedor;
     }
     
-    private static boolean executarTurno(Jogador jogador, Jogo jogo, ArrayList<Jogador> jogadores) {
+    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
+    private static boolean executarTurno(Jogador jogador, Jogo jogo, List<Jogador> jogadores) {
         System.out.println("\nVez do jogador " + jogador.getCor() + jogador.getNome() + ANSI_RESET + " de jogar");
         
         if (jogo instanceof JogoNormal) { // Condicional 1
@@ -159,7 +165,8 @@ public class Main {
         return false;
     }
     
-    private static void moverJogador(Jogador jogador, Jogo jogo, ArrayList<Jogador> jogadores) {
+    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
+    private static void moverJogador(Jogador jogador, Jogo jogo, List<Jogador> jogadores) {
         if (jogo instanceof JogoNormal) { // Condicional 1: Movimento Normal (Dados)
             int[] dados = jogador.jogarDados();
             int passos = dados[0] + dados[1];
@@ -179,7 +186,8 @@ public class Main {
         }
     }
     
-    private static void mostrarPosicoes(ArrayList<Jogador> jogadores) {
+    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
+    private static void mostrarPosicoes(List<Jogador> jogadores) {
         System.out.println("\n\nPosição de cada jogador");
         for (Jogador jogadorMostrado : jogadores) {
             System.out.printf("%s%s%s: %d%n", jogadorMostrado.getCor(), 
@@ -187,7 +195,8 @@ public class Main {
         }
     }
     
-    private static void mostrarPlacar(Jogador vencedor, ArrayList<Jogador> jogadores) {
+    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
+    private static void mostrarPlacar(Jogador vencedor, List<Jogador> jogadores) {
         if (vencedor == null) {
             System.out.println("\n\nO jogo terminou sem um vencedor claro.");
             return;
@@ -226,8 +235,7 @@ public class Main {
 
         while (true) {
             System.out.println("Qual opção voçê quer?\n");
-            // Nota: Se fosse refatorar o menu, esta linha seria o ponto principal:
-            // if (scanner.hasNextInt()) { int opcao = scanner.nextInt(); ... }
+
             int opcao = Integer.parseInt(scanner.next());
 
             if (opcao == 1) {
