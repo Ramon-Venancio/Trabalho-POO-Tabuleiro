@@ -1,0 +1,6 @@
+projectKey=Meu-projeto-tabuleiro
+serverUrl=http://localhost:9000
+serverVersion=25.11.0.114957
+dashboardUrl=http://localhost:9000/dashboard?id=Meu-projeto-tabuleiro
+ceTaskId=bd7448ec-52ac-405f-b3eb-da2260f956a1
+ceTaskUrl=http://localhost:9000/api/ce/task?id=bd7448ec-52ac-405f-b3eb-da2260f956a1

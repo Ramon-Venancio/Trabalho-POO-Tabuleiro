@@ -1,0 +1,14 @@
+com\faculdade\componentes\Baralho.class
+com\faculdade\jogador\Jogador.class
+com\faculdade\controle\Main.class
+com\faculdade\controle\JogoDebug.class
+com\faculdade\tabuleiro\Casa$1.class
+com\faculdade\controle\Jogo.class
+com\faculdade\jogador\JogadorAzarado.class
+com\faculdade\jogador\JogadorNormal.class
+com\faculdade\componentes\Dado.class
+com\faculdade\tabuleiro\TipoCasa.class
+com\faculdade\tabuleiro\Casa.class
+com\faculdade\controle\JogoNormal.class
+com\faculdade\jogador\JogadorSortudo.class
+com\faculdade\tabuleiro\Tabuleiro.class
