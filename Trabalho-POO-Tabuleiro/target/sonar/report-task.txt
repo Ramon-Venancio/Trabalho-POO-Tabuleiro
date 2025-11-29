@@ -1,6 +1,6 @@
-projectKey=Meu-projeto-tabuleiro
+projectKey=com.faculdade:Trabalho-POO-Tabuleiro
 serverUrl=http://localhost:9000
 serverVersion=25.11.0.114957
-dashboardUrl=http://localhost:9000/dashboard?id=Meu-projeto-tabuleiro
-ceTaskId=bd7448ec-52ac-405f-b3eb-da2260f956a1
-ceTaskUrl=http://localhost:9000/api/ce/task?id=bd7448ec-52ac-405f-b3eb-da2260f956a1
+dashboardUrl=http://localhost:9000/dashboard?id=com.faculdade%3ATrabalho-POO-Tabuleiro
+ceTaskId=d4da5827-85c3-4e0d-96a7-7181e99f7c1a
+ceTaskUrl=http://localhost:9000/api/ce/task?id=d4da5827-85c3-4e0d-96a7-7181e99f7c1a

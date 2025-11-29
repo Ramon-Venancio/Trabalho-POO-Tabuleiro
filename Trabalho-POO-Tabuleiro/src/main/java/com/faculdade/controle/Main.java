@@ -3,9 +3,6 @@ package com.faculdade.controle;
 import com.faculdade.jogador.*;
 import java.util.*;
 
-/**
- * Classe principal do jogo, responsável pela inicialização e loop de controle de I/O.
- */
 public class Main {
 
     // --- CONSTANTES E VARIÁVEIS ESTÁTICAS (MANTIDAS) ---
@@ -25,7 +22,7 @@ public class Main {
     public static final String EMOJI_SETA_RETORNO = "\u21A9\uFE0F";
     public static final String EMOJI_SETAS_HORARIAS = "\uD83D\uDD04";
     
-    // --- NOVO MÉTODO MAIN (Apenas inicializa o jogo) ---
+    // Inicializa o jogo
     public static void main(String[] args) {
         Jogo jogo = menu();
         // Chama o método orquestrador que contém a lógica de jogo.
