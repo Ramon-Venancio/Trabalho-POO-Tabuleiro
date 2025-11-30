@@ -2,8 +2,7 @@ package com.faculdade.componentes;
 import java.util.Random;
 
 public class Dado {
-    private static Random random = new Random();
     public static int rolarDados() {
-        return random.nextInt(6) + 1;
+        return new Random().nextInt(6) + 1; // Cria um novo objeto Random a cada chamada
     }
 }
