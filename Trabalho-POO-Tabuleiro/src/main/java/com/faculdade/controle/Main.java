@@ -2,11 +2,12 @@ package com.faculdade.controle;
 
 import com.faculdade.jogador.*;
 import java.util.*;
+import com.faculdade.tabuleiro.Tabuleiro;
 
 public class Main {
 
     // --- CONSTANTES E VARIÁVEIS ESTÁTICAS ---
-    public static Scanner scanner = new Scanner(System.in);
+    public static final Scanner scanner = new Scanner(System.in);
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String EMOJI_DADO = "\uD83C\uDFB2";
     public static final String EMOJI_PESSOA_ANDANDO = "\uD83D\uDEB6";
@@ -36,8 +37,8 @@ public class Main {
         // 1. Configuração de Jogadores (Quantidade)
         configurarQuantidadeJogadores(jogo); 
 
-        //Informa o tamanho da lista
-        // ✅ CORREÇÃO: Alterado de ArrayList<Jogador> para List<Jogador> 
+        // Informa o tamanho da lista
+        // Alterado de ArrayList<Jogador> para List<Jogador> 
         // para corresponder ao retorno de jogo.getJogadores()
         List<Jogador> jogadores = jogo.getJogadores();
 
@@ -158,7 +159,7 @@ public class Main {
         }
         
         // Condicional de vitória
-        if ((jogador.getPosicao()+1) >= 40) { 
+        if (jogador.getPosicao() >= Tabuleiro.TOTAL_CASAS) { 
             System.out.printf("%nJogador %s%s%s Venceu %s", jogador.getCor(), jogador.getNome(), ANSI_RESET, EMOJI_BANDEIRA);
             return true;
         }
@@ -191,7 +192,7 @@ public class Main {
         System.out.println("\n\nPosição de cada jogador");
         for (Jogador jogadorMostrado : jogadores) {
             System.out.printf("%s%s%s: %d%n", jogadorMostrado.getCor(), 
-                jogadorMostrado.getNome(), ANSI_RESET, jogadorMostrado.getPosicao()+1);
+                jogadorMostrado.getNome(), ANSI_RESET, jogadorMostrado.getPosicao());
         }
     }
     
@@ -203,21 +204,19 @@ public class Main {
         }
         
         System.out.println("\n\nPlacar");
-        if (vencedor.getPosicao() >= 40) {
-            vencedor.setPosicao(39);
-        }
+        int posicaoFinalExibida = Math.min(vencedor.getPosicao(), Tabuleiro.TOTAL_CASAS);
         
         // Exibição do Vencedor
-        System.out.printf("Jogador Vencedor %s%s%s %s: %s Passos %d %s Posição: %d%n", 
+        System.out.printf("Jogador Vencedor %s%s%s %s: %s Jogadas %d %s Posição: %d%n", 
             vencedor.getCor(), vencedor.getNome(), ANSI_RESET, EMOJI_TROFEU, 
-            EMOJI_PASSOS, vencedor.getJogadas(), EMOJI_ALFINETE, vencedor.getPosicao()+1);
+            EMOJI_PASSOS, vencedor.getJogadas(), EMOJI_ALFINETE, posicaoFinalExibida);
         
         // Exibição dos demais jogadores
         for (Jogador jogador : jogadores) {
             if (!(jogador.equals(vencedor))) {
-                System.out.printf("Jogador %s%s%s: %s Passos %d %s Posição %d%n", // Adicionado %n para quebrar linha
+                System.out.printf("Jogador %s%s%s: %s Jogadas %d %s Posição %d%n", // Adicionado %n para quebrar linha
                     jogador.getCor(), jogador.getNome(), ANSI_RESET, EMOJI_PASSOS, 
-                    jogador.getJogadas(), EMOJI_ALFINETE, jogador.getPosicao()+1);
+                    jogador.getJogadas(), EMOJI_ALFINETE, jogador.getPosicao());
             }
         }
     }
@@ -239,11 +238,11 @@ public class Main {
             int opcao = Integer.parseInt(scanner.next());
 
             if (opcao == 1) {
-                Jogo jogo = new JogoNormal();
-                return jogo;
+                // ✅ CORREÇÃO: Retorno imediato, removendo a variável 'jogo'
+                return new JogoNormal(); 
             } else if (opcao == 2) {
-                Jogo jogo = new JogoDebug();
-                return jogo;
+                // ✅ CORREÇÃO: Retorno imediato, removendo a variável 'jogo'
+                return new JogoDebug();
             } else {
                 System.out.println("Valor invalido! Digite novamente.\n");
             }

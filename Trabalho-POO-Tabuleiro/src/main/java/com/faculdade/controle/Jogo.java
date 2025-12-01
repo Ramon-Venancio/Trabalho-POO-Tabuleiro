@@ -1,6 +1,5 @@
 package com.faculdade.controle;
 import com.faculdade.componentes.Baralho;
-import com.faculdade.componentes.Dado;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List; // ✅ Novo Import
@@ -13,7 +12,23 @@ public abstract class Jogo {
     protected List<Jogador> jogadores; 
     protected Tabuleiro tabuleiro;
     protected Baralho baralho;
-    protected Dado dado;
+    
+    /*
+     * Substitui um jogador existente na lista interna por uma nova instância.
+     * Esta ação é necessária para aplicar o Efeito Surpresa (Casa Surpresa), 
+     * que muda o tipo de um jogador (Normal, Sortudo ou Azarado) mantendo 
+     * sua posição e estatísticas de jogo.
+     * 
+     * Este método garante que a modificação seja feita na lista interna e mutável 
+     * da classe Jogo, contornando a proteção da lista retornada pelo getJogadores().
+    */
+    
+    public void substituirJogador(Jogador jogadorAntigo, Jogador jogadorNovo) {
+        if (jogadores.contains(jogadorAntigo)) {
+            int index = jogadores.indexOf(jogadorAntigo);
+            jogadores.set(index, jogadorNovo); 
+        }
+    }
     
     // ✅ NOVA IMPLEMENTAÇÃO: Lógica Comum Centralizada
     public void iniciarJogo(int quantidade) {
@@ -56,13 +71,12 @@ public abstract class Jogo {
         }
         
         tabuleiro = new Tabuleiro();
-        dado = new Dado();
     }
     
     public abstract void terminarJogo();
         
     public Baralho getBaralho() { return baralho; } // Implementação Concreta
-    public Dado getDado() { return dado; } // Implementação Concreta
+    
     public Tabuleiro getTabuleiro() { return tabuleiro; } // Implementação Concreta
     
     // ✅ CORREÇÃO: Retornando List (interface) e protegendo a lista (unmodifiableList)

@@ -1,6 +1,7 @@
 package com.faculdade.tabuleiro;
 
     public enum TipoCasa {
+        AZAR,
         NORMAL,          // Casa comum, sem efeito especial
         PERDE_A_VEZ,     // O jogador perde a próxima rodada
         SURPRESA,        // O jogador muda seu tipo (ex: vira sortudo ou azarado)

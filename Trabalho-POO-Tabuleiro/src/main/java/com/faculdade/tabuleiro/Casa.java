@@ -5,124 +5,211 @@ import com.faculdade.controle.Main;
 import com.faculdade.jogador.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Casa {
+    
+    private static final Logger logger = Logger.getLogger(Casa.class.getName());
 
     private final int numero;
     private TipoCasa tipo;
-    
-    /*
-    Construtor - cria uma casa normal com um número específico
-    */
     
     public Casa(int numero){
         this.numero = numero;
         this.tipo = TipoCasa.NORMAL;
     }
 
-    // adicionar get e set da posiçao para ser mudado
-    
-    //Retorna o número da casa
     public int getNumero(){
         return numero;
     }
     
-    //Retorna o tipo da casa
     public TipoCasa getTipo(){
         return tipo;
     }
     
-    //Define o tipo da casa
     public void setTipo(TipoCasa tipo){
         this.tipo = tipo;
     }
     
-     public void aplicarEfeito(Jogador jogador, List<Jogador> todosJogadores, Jogo jogo) {
+
+    // ============================================================
+    //  APLICAR EFEITO PRINCIPAL (switch limpo)
+    // ============================================================
+    public void aplicarEfeito(Jogador jogador, List<Jogador> todosJogadores, Jogo jogo) {
+
         switch (tipo) {
-            case MAGICA -> aplicarEfeitoMagico(jogador, todosJogadores);
-            case SORTE -> {
-                if (!(jogador instanceof JogadorAzarado)) {
-                    jogador.setPosicao(Math.min(jogador.getPosicao() + 3, Tabuleiro.TOTAL_CASAS));
-                    System.out.println("\nCasa da Sorte " + Main.EMOJI_TREVO + ": Você pula 3 casas!");
-                } else {
-                    System.out.println("\nCasa da Sorte " + Main.EMOJI_TREVO + ": Você é um Jogador Azarado! Bônus de pular 3 casas anulado.");
-                }
-            }
-            case VOLTA_AO_INICIO -> {
-                System.out.println("\nCasa do Revés " + Main.EMOJI_SETA_RETORNO + " : Escolha um jogador para voltar pro inicio");
-                int count = 1;
-                ArrayList<Jogador> jogadoresSelecionados = new ArrayList<Jogador>();
-                while(true) {
-                    for (Jogador j : todosJogadores) {
-                        if (!(j.equals(jogador))) {
-                            System.out.println(count + " - " + j.getNome());
-                            jogadoresSelecionados.add(j);
-                            count++;
-                        }
-                    }
-                    int escolhaJogador = Main.scanner.nextInt();
-                    
-                    Main.scanner.nextLine();
-                    
-                    if (escolhaJogador > 0 && escolhaJogador < count) {
-                        int indexJogadorSelecionado = jogadoresSelecionados.get(escolhaJogador-1).getIdJogador();
-                        todosJogadores.get(indexJogadorSelecionado).setPosicao(0);
-                        break;
-                    } else {
-                        System.out.println("Escolha invalida!\nDigite o numero respectivo do jogador para voltar ao inicio.");
-                    }
-                }
-            }
+
+            case MAGICA ->
+                aplicarEfeitoMagico(jogador, todosJogadores);
+
+            case SORTE ->
+                aplicarEfeitoSorte(jogador);
+
+            case VOLTA_AO_INICIO ->
+                aplicarEfeitoVoltaAoInicio(jogador, todosJogadores);
+
             case PERDE_A_VEZ -> {
-                jogador.setPerdeRodada(false);
-                System.out.println("\nCasa Pula Vez " + Main.EMOJI_ROSTO_CONGELADO + ": Você não poderá jogador proxima rodada.");
+                jogador.setPerdeRodada(true);
+                logger.info("\nCasa Pula Vez 🥶: Você não poderá jogar na próxima rodada.");
             }
+
             case SURPRESA -> {
-                aplicarEfeitoSurpresa(jogador, todosJogadores, jogo);
-                System.out.println("\nCasa Surpresa " + Main.EMOJI_SETAS_HORARIAS + ": Seu tipo foi mudado!");
+                aplicarEfeitoSurpresa(jogador, jogo);
+                logger.info("\nCasa Surpresa 🔁: Seu tipo foi alterado!");
             }
-            default -> {}
+
+            default -> {
+                // Casa normal — nenhum efeito
+            }
         }
     }
 
+
+
+    // ============================================================
+    //  EFEITO: CASA MÁGICA
+    // ============================================================
     private void aplicarEfeitoMagico(Jogador jogador, List<Jogador> todosJogadores) {
+
         if (todosJogadores.size() <= 1) return;
+
         Jogador maisAtras = null;
+
         for (Jogador j : todosJogadores) {
             if (j == jogador) continue;
-            if (maisAtras == null || j.getPosicao() < maisAtras.getPosicao()) maisAtras = j;
+            if (maisAtras == null || j.getPosicao() < maisAtras.getPosicao())
+                maisAtras = j;
         }
+
         if (maisAtras == null || jogador.getPosicao() <= maisAtras.getPosicao()) {
-            System.out.println("\nCasa Mágica " + Main.EMOJI_BRILHO + ": Você já é o ultimo jogador. Não troca de lugar com nenhum jogador.");
+            logger.info("\nCasa Mágica ✨: Você já é o último jogador. Nada acontece.");
             return;
         }
+
         int temp = jogador.getPosicao();
         jogador.setPosicao(maisAtras.getPosicao());
         maisAtras.setPosicao(temp);
-        System.out.println("\nCasa Mágica " + Main.EMOJI_BRILHO + ": Você troca de lugar com o ultimo jogador " + maisAtras.getCor() + maisAtras.getNome() + Main.ANSI_RESET);
+
+        logger.info("\nCasa Mágica ✨: Você trocou de lugar com " +
+                    maisAtras.getCor() + maisAtras.getNome() + Main.ANSI_RESET);
     }
-    
-    private void aplicarEfeitoSurpresa(Jogador jogador, List<Jogador> todosJogadores, Jogo jogo) {
+
+
+
+    // ============================================================
+    //  EFEITO: CASA DA SORTE
+    // ============================================================
+    private void aplicarEfeitoSorte(Jogador jogador) {
+
+        if (!(jogador instanceof JogadorAzarado)) {
+
+            jogador.setPosicao(
+                Math.min(jogador.getPosicao() + 3, Tabuleiro.TOTAL_CASAS)
+            );
+
+            logger.info("\nCasa da Sorte 🍀: Você pulou 3 casas!");
+
+        } else {
+
+            logger.info("\nCasa da Sorte 🍀: Você é Jogador Azarado! Bônus cancelado.");
+
+        }
+    }
+
+
+
+    // ============================================================
+    //  EFEITO: VOLTA AO INÍCIO
+    // ============================================================
+    private void aplicarEfeitoVoltaAoInicio(Jogador jogador, List<Jogador> todosJogadores) {
+
+    logger.info("\n========== CASA DO REVÊS ==========");
+    logger.info("Escolha um jogador para voltar ao início:");
+    logger.info("------------------------------------");
+
+    Jogador escolhido = escolherJogadorParaReset(todosJogadores, jogador);
+
+    if (escolhido != null) {
+        escolhido.setPosicao(0);
+        logger.info("Jogador " + escolhido.getNome() + " voltou ao início!");
+    }
+
+    logger.info("====================================\n");
+}
+
+    private Jogador escolherJogadorParaReset(List<Jogador> todos, Jogador atual) {
+
+        List<Jogador> opcoes = new ArrayList<>();
+        int count = 1;
+
+        for (Jogador j : todos) {
+            if (!j.equals(atual)) {
+
+                logger.log(Level.INFO, "{0} - {1}",
+                        new Object[]{count, j.getNome()});
+
+                opcoes.add(j);
+                count++;
+            }
+        }
+
+        while (true) {
+
+            if (!Main.scanner.hasNextInt()) {
+                logger.warning("Entrada inválida! Digite o número do jogador.");
+                Main.scanner.nextLine();
+                continue;
+            }
+
+            int escolha = Main.scanner.nextInt();
+            Main.scanner.nextLine();
+
+            if (escolha > 0 && escolha <= opcoes.size()) {
+                return opcoes.get(escolha - 1);
+            }
+
+            logger.warning("Opção fora do intervalo! Tente novamente.");
+        }
+    }
+
+
+
+    // ============================================================
+    //  EFEITO: CASA SURPRESA
+    // ============================================================
+    private void aplicarEfeitoSurpresa(Jogador jogador, Jogo jogo) {
+
         String tipoSorteado = jogo.getBaralho().sortearTipo();
-        Jogador jogadorNovoTipo = null;
-        
-        if (tipoSorteado.equals("Normal")) {
-            jogadorNovoTipo = new JogadorNormal(jogador.getIdJogador(), jogador.getCor(), jogador.getNome());
-        } else if (tipoSorteado.equals("Azarado")) {
-            jogadorNovoTipo = new JogadorAzarado(jogador.getIdJogador(), jogador.getCor(), jogador.getNome());
-        } else if(tipoSorteado.equals("Sortudo")) {
-            jogadorNovoTipo = new JogadorSortudo(jogador.getIdJogador(), jogador.getCor(), jogador.getNome());
+        Jogador novo = null;
+
+        switch (tipoSorteado) {
+            case Jogador.TIPO_NORMAL ->
+                novo = new JogadorNormal(jogador.getIdJogador(), jogador.getCor(), jogador.getNome());
+
+            case Jogador.TIPO_AZARADO ->
+                novo = new JogadorAzarado(jogador.getIdJogador(), jogador.getCor(), jogador.getNome());
+
+            case Jogador.TIPO_SORTUDO ->
+                novo = new JogadorSortudo(jogador.getIdJogador(), jogador.getCor(), jogador.getNome());
+            
+            default -> {/*Bloco existente para o caso de algo não de acordo com o que se espera*/}
         }
-        
-        jogadorNovoTipo.setPosicao(jogador.getPosicao());
-        jogadorNovoTipo.setJogadas(jogador.getJogadas());
-        jogadorNovoTipo.setPerdeRodada(jogador.getPerdeRodada());
-        todosJogadores.set(todosJogadores.indexOf(jogador), jogadorNovoTipo);
-        }
-    
-    @Override
-    public String toString(){
-         return String.format("Casa %02d (%s)", numero, tipo);
+
+        if (novo == null) return;
+
+        // Transferência de atributos
+        novo.setPosicao(jogador.getPosicao());
+        novo.setJogadas(jogador.getJogadas());
+        novo.setPerdeRodada(jogador.getPerdeRodada());
+
+        jogo.substituirJogador(jogador, novo);
+
+        logger.log(Level.INFO,
+                
+        "\nO jogador {0}{1}{2} agora é do tipo {3}!",
+                
+        new Object[]{ jogador.getCor(), jogador.getNome(), Main.ANSI_RESET, tipoSorteado });
+
     }
 }

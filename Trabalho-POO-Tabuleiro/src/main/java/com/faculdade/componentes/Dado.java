@@ -1,8 +1,11 @@
 package com.faculdade.componentes;
-import java.util.Random;
 
 public class Dado {
+    
+    private static final java.util.Random RANDOM = new java.util.Random(); 
+
     public static int rolarDados() {
-        return new Random().nextInt(6) + 1; // Cria um novo objeto Random a cada chamada
+        
+        return RANDOM.nextInt(6) + 1; 
     }
 }

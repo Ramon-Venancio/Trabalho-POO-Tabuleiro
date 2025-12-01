@@ -4,7 +4,7 @@ import java.util.Random;
 public class Baralho {
     
     // 1. MUDANÇA PRINCIPAL: O campo agora é uma constante estática final (public static final)
-    public static final String[] TIPOS_CARTAS = {"Sortudo", "Azarado", "Normal"};
+    protected static final String[] TIPOS_CARTAS = {"Sortudo", "Azarado", "Normal"};
     
     private final Random random = new Random();
     

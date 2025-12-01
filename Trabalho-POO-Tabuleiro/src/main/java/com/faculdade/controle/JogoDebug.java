@@ -4,16 +4,15 @@ package com.faculdade.controle;
 
 public class JogoDebug extends Jogo {
     
-    // ✅ CORREÇÃO: Não há mais necessidade de sobrescrever iniciarJogo.
+    // Não há mais necessidade de sobrescrever iniciarJogo.
     // Ele é herdado e executa a lógica de inicialização do Jogo.java.
 
     @Override
     public void terminarJogo() {
-        /*
-        * A implementação continua vazia, específica para o modo debug.
-        */
+        // O método é obrigatório por ser abstrato na classe mãe 'Jogo', 
+        // mas é mantido vazio nesta classe de debug/teste por não ter lógica final.
     }
     
-    // ✅ CORREÇÃO: Os métodos getBaralho(), getJogadores(), etc.,
+    // Os métodos getBaralho(), getJogadores(), etc.,
     // foram removidos daqui, pois são herdados da classe Jogo.
 }
