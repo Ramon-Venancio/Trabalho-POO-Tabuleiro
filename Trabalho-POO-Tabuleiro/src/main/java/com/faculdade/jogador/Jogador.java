@@ -1,46 +1,50 @@
 package com.faculdade.jogador;
 
+import java.util.Objects;
+
+/**
+ * Classe Abstrata Jogador
+ * Suporta Factory, Strategy e a Casa JogaDeNovo.
+ */
 public abstract class Jogador {
 
-    // NOVO: Constantes para os tipos de jogador (centralização de strings).
-    public static final String TIPO_NORMAL = "Normal";
-    public static final String TIPO_AZARADO = "Azarado";
-    public static final String TIPO_SORTUDO = "Sortudo";
-    
+    // Tipos de jogador (usados pela Factory)
+    public static final String TIPO_NORMAL = "NORMAL";
+    public static final String TIPO_AZARADO = "AZARADO";
+    public static final String TIPO_SORTUDO = "SORTUDO";
+
     protected int idJogador;
     protected String cor;
     protected String nome;
     protected int posicao;
-    protected int quantidadePassos;
-    protected boolean podeJogar;
-    
+    protected int quantidadeJogadas;
+    protected boolean perdeRodada;
+    protected int moedas;
+    protected boolean jogaDeNovo;
+
     protected Jogador(int idJogador, String cor, String nome) {
-        this.idJogador=idJogador;
-        this.cor=cor;
-        this.nome=nome;
-        this.podeJogar = true;
-        
+        this.idJogador = idJogador;
+        this.cor = cor;
+        this.nome = nome;
         this.posicao = 0;
+        this.quantidadeJogadas = 0;
+        this.perdeRodada = false;
+        this.moedas = 0;
+        this.jogaDeNovo = false;
     }
 
-    public int getIdJogador(){
+    public abstract int[] jogarDados();
+
+    public int getIdJogador() {
         return idJogador;
     }
 
-    public String getCor(){
+    public String getCor() {
         return cor;
     }
 
-    public void setCor(String cor){
-        this.cor = cor;
-    }
-
-    public String getNome(){
+    public String getNome() {
         return nome;
-    }
-
-    public void setNome(String nome){
-        this.nome = nome;
     }
 
     public int getPosicao() {
@@ -52,52 +56,65 @@ public abstract class Jogador {
     }
 
     public int getJogadas() {
-        return quantidadePassos;
+        return quantidadeJogadas;
     }
 
     public void setJogadas(int jogadas) {
-        this.quantidadePassos = jogadas;
+        this.quantidadeJogadas = jogadas;
     }
 
     public boolean getPerdeRodada() {
-        return podeJogar;
+        return perdeRodada;
     }
 
-    public void setPerdeRodada(boolean podeJogar) {
-        this.podeJogar = podeJogar;
+    public void setPerdeRodada(boolean perdeRodada) {
+        this.perdeRodada = perdeRodada;
     }
 
-    public void incrementarJogadas(){
-        this.quantidadePassos++;
+    public int getMoedas() {
+        return moedas;
     }
 
-    public abstract int[] jogarDados();
-    
+    public void setMoedas(int moedas) {
+        this.moedas = moedas;
+    }
+
+    // ✅ NOVO: controle de jogar novamente
+    public boolean isJogaDeNovo() {
+        return jogaDeNovo;
+    }
+
+    public void setJogaDeNovo(boolean jogaDeNovo) {
+        this.jogaDeNovo = jogaDeNovo;
+    }
+
+    // --- MÉTODOS AUXILIARES ---
+    public void incrementarJogadas() {
+        this.quantidadeJogadas++;
+    }
+
+    public void adicionarMoedas(int qtd) {
+        this.moedas += qtd;
+    }
+
     @Override
-    public boolean equals(Object outro) {
-        // 1. Verifica se são o mesmo objeto na memória (otimização)
-        if (this == outro) {
-            return true;
-        }
-
-        // 2. Verifica se o objeto não é nulo e é do tipo Jogador
-        if (outro == null || getClass() != outro.getClass()) {
-            return false;
-        }
-
-        // 3. Converte para o tipo Jogador
-        Jogador outroJogador = (Jogador) outro;
-
-        // 4. Compara os atributos de VALOR (o que define a igualdade)
-        return idJogador == outroJogador.idJogador; 
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Jogador jogador = (Jogador) o;
+        return idJogador == jogador.idJogador;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 61 * hash + this.idJogador;
-        return hash;
+        return Objects.hash(idJogador);
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "%s (Posição: %d | Moedas: %d | Jogadas: %d)",
+            nome, posicao, moedas, quantidadeJogadas
+        );
+    }
 }
-

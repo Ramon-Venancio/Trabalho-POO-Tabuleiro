@@ -1,86 +1,101 @@
 package com.faculdade.controle;
+
 import com.faculdade.componentes.Baralho;
+import com.faculdade.jogador.JogadorFactory; // NOVO: Importa a Factory
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List; // ✅ Novo Import
+import java.util.List;
 
 import com.faculdade.jogador.*;
 import com.faculdade.tabuleiro.Tabuleiro;
 
 public abstract class Jogo {
-    // ✅ CORREÇÃO: Usando a interface List e inicializando com ArrayList (implícito nas subclasses)
-    protected List<Jogador> jogadores; 
+
+    protected List<Jogador> jogadores;
     protected Tabuleiro tabuleiro;
-    protected Baralho baralho;
-    
+    protected Baralho baralho = new Baralho(); // Baralho pode ser inicializado aqui
+    protected Jogador vencedor = null;
+
     /*
      * Substitui um jogador existente na lista interna por uma nova instância.
-     * Esta ação é necessária para aplicar o Efeito Surpresa (Casa Surpresa), 
-     * que muda o tipo de um jogador (Normal, Sortudo ou Azarado) mantendo 
-     * sua posição e estatísticas de jogo.
-     * 
-     * Este método garante que a modificação seja feita na lista interna e mutável 
-     * da classe Jogo, contornando a proteção da lista retornada pelo getJogadores().
-    */
-    
+     */
     public void substituirJogador(Jogador jogadorAntigo, Jogador jogadorNovo) {
         if (jogadores.contains(jogadorAntigo)) {
             int index = jogadores.indexOf(jogadorAntigo);
-            jogadores.set(index, jogadorNovo); 
+            jogadores.set(index, jogadorNovo);
         }
     }
-    
-    // ✅ NOVA IMPLEMENTAÇÃO: Lógica Comum Centralizada
-    public void iniciarJogo(int quantidade) {
-        jogadores = new ArrayList<>(); // Inicializa a implementação concreta
+
+    // NOVO (FACADE): Método 1 de Configuração (Tabuleiro)
+    public void configTabuleiro(int numCasas) {
+        // Padrão Singleton: Obtém a única instância do tabuleiro.
+        tabuleiro = Tabuleiro.getInstance();
+
+        // Configura o tabuleiro com o número de casas.
+        tabuleiro.configurarCasas(numCasas);
+    }
+
+    // NOVO (FACADE): Método 2 de Configuração (Jogadores)
+    public void config(int quantidade) {
+
+        this.jogadores = new ArrayList<>();
+
         String[][] nomesCoresJogadores = {
-            {"A", "\u001B[34m"}, {"B", "\u001B[31m"}, {"C", "\u001B[32m"}, 
-            {"D", "\u001B[33m"}, {"E", "\u001B[38;5;208m"}, {"F", "\u001B[38;2;153;50;204m"}
+            {"Azul", Main.ANSI_AZUL}, {"Verde", Main.ANSI_VERDE}, {"Vermelho", Main.ANSI_VERMELHO},
+            {"Amarelo", Main.ANSI_AMARELO}, {"Roxo", Main.ANSI_ROXO}, {"Ciano", Main.ANSI_CIANO}
         };
-        
-        baralho = new Baralho();
+
         String tipoPrimeiro = "";
-        
+
         for (int i = 0; i < quantidade; i++) {
+            System.out.printf("Informe o nome do jogador %d (Cor: %s%s%s): ", i + 1, nomesCoresJogadores[i][1], nomesCoresJogadores[i][0], Main.ANSI_RESET);
+
+            String nome = Main.scanner.nextLine().trim();
+
+            if (nome.isEmpty()) {
+                nome = nomesCoresJogadores[i][0];
+            }
+
+
             String tipoAleatorio = baralho.sortearTipo();
+
             if (i == 0) {
                 tipoPrimeiro = tipoAleatorio;
             }
-            
+
             if (i == 1) {
                 do {
                     tipoAleatorio = baralho.sortearTipo();
                 } while (tipoAleatorio.equals(tipoPrimeiro));
             }
-            
-            String[] dadosJogador = {nomesCoresJogadores[i][0], nomesCoresJogadores[i][1]};
 
-            Jogador jogador = null;
-            // ✅ CORREÇÃO: Usando constantes de Jogador.java
-            if (tipoAleatorio.equals(Jogador.TIPO_NORMAL)) {
-                jogador = new JogadorNormal(i, dadosJogador[1], dadosJogador[0]);
-            } else if (tipoAleatorio.equals(Jogador.TIPO_AZARADO)) {
-                jogador = new JogadorAzarado(i, dadosJogador[1], dadosJogador[0]);
-            } else if(tipoAleatorio.equals(Jogador.TIPO_SORTUDO)) {
-                jogador = new JogadorSortudo(i, dadosJogador[1], dadosJogador[0]);
-            }
+            // Padrão FACTORY: Chama a Factory para criar o jogador, limpando o Jogo.java
+            Jogador jogador = JogadorFactory.criarJogador(
+                tipoAleatorio,
+                i,
+                nomesCoresJogadores[i][1], // Cor
+                nome                       // Nome
+            );
 
-            if (jogador != null) {
-                jogadores.add(jogador);
-            }
+            jogadores.add(jogador);
         }
-        
-        tabuleiro = new Tabuleiro();
     }
-    
+
     public abstract void terminarJogo();
-        
-    public Baralho getBaralho() { return baralho; } // Implementação Concreta
-    
-    public Tabuleiro getTabuleiro() { return tabuleiro; } // Implementação Concreta
-    
-    // ✅ CORREÇÃO: Retornando List (interface) e protegendo a lista (unmodifiableList)
-    public List<Jogador> getJogadores() {
-        return Collections.unmodifiableList(jogadores);
+
+    // NOVOS MÉTODOS ABSTRATOS (PARTE DO FACADE)
+    public abstract void printTabuleiro();
+    public abstract void start();
+
+    public Baralho getBaralho() { return baralho; }
+    public Tabuleiro getTabuleiro() { return tabuleiro; }
+    public List<Jogador> getJogadores() { return Collections.unmodifiableList(jogadores); }
+
+    public Jogador getVencedor() {
+        return vencedor;
+    }
+
+    public void setVencedor(Jogador vencedor) {
+        this.vencedor = vencedor;
     }
 }

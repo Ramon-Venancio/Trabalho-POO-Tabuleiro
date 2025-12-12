@@ -1,250 +1,109 @@
 package com.faculdade.controle;
 
-import com.faculdade.jogador.*;
-import java.util.*;
-import com.faculdade.tabuleiro.Tabuleiro;
+import com.faculdade.jogador.Jogador;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
-    // --- CONSTANTES E VARIÁVEIS ESTÁTICAS ---
-    public static final Scanner scanner = new Scanner(System.in);
+    // --- CONSTANTES DE FORMATAÇÃO (CORES ANSI) ---
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String EMOJI_DADO = "\uD83C\uDFB2";
-    public static final String EMOJI_PESSOA_ANDANDO = "\uD83D\uDEB6";
-    public static final String EMOJI_PASSOS = "\uD83D\uDC62";
-    public static final String EMOJI_TROFEU = "\uD83C\uDFC6";
-    public static final String EMOJI_BANDEIRA = "\uD83C\uDFC1";
-    public static final String EMOJI_ALFINETE = "\uD83D\uDCCD";
+    public static final String ANSI_AZUL = "\u001B[34m";
+    public static final String ANSI_VERDE = "\u001B[32m";
+    public static final String ANSI_VERMELHO = "\u001B[31m";
+    public static final String ANSI_AMARELO = "\u001B[33m";
+    public static final String ANSI_ROXO = "\u001B[35m";
+    public static final String ANSI_CIANO = "\u001B[36m";
     public static final String CLEAR_SCREEN = "\u001B[H\u001B[2J";
+
+    // --- EMOJIS ---
+    public static final String EMOJI_DADO = "\uD83C\uDFB2";
+    public static final String EMOJI_TROFEU = "\uD83C\uDFC6";
+    public static final String EMOJI_ALFINETE = "\uD83D\uDCCD";
+    public static final String EMOJI_PASSOS = "\uD83D\uDC62";
     public static final String EMOJI_SETA_DIREITA = "\u27A1";
-    public static final String EMOJI_TREVO = "\uD83C\uDF40";
-    public static final String EMOJI_ROSTO_CONGELADO = "\uD83E\uDD76";
-    public static final String EMOJI_BRILHO = "\u2728";
-    public static final String EMOJI_SETA_RETORNO = "\u21A9\uFE0F";
-    public static final String EMOJI_SETAS_HORARIAS = "\uD83D\uDD04";
 
-
-    //Inicializa o jogo
+    // Scanner único para o sistema todo
+    public static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        // 1. Menu Inicial para escolher o modo de jogo
         Jogo jogo = menu();
-        // Chama o método orquestrador que contém a lógica de jogo.
-        executarJogo(jogo);
-    }
-    
-    public static void executarJogo(Jogo jogo) {
 
-        // 1. Configuração de Jogadores (Quantidade)
-        configurarQuantidadeJogadores(jogo); 
-
-        // Informa o tamanho da lista
-        // Alterado de ArrayList<Jogador> para List<Jogador> 
-        // para corresponder ao retorno de jogo.getJogadores()
-        List<Jogador> jogadores = jogo.getJogadores();
-
-        // 2. Configuração de Nomes dos Jogadores
-        configurarNomes(jogadores);
-        
-        // 3. Exibição e Inicialização
-        mostrarJogadores(jogadores); 
-        iniciarJogoUX();
-        
-        // 4. Loop Principal de Rodadas
-        Jogador vencedor = executarLoopPrincipal(jogo, jogadores);
-        
-        // 5. Exibição Final do Placar
-        mostrarPlacar(vencedor, jogadores); 
-    }
-    
-    private static void configurarQuantidadeJogadores(Jogo jogo) {
-        while (true) {
-            System.out.println("Quantas pessoas vão jogar? (No minimo 2 jogadores e no máximo 6)");
-            
-            // Adicionado validação robusta para evitar InputMismatchException
-            if (scanner.hasNextInt()) { 
-                int quantidadeJogadores = scanner.nextInt();
-                scanner.nextLine(); // Consome a quebra de linha
-                
-                if (quantidadeJogadores >= 2 && quantidadeJogadores < 7) {
-                    jogo.iniciarJogo(quantidadeJogadores);
-                    break;
-                } else {
-                    System.out.println("Quantidade de jogadores incorreto");
-                }
-            } else {
-                System.out.println("Entrada inválida. Digite um número inteiro.");
-                scanner.nextLine(); // Consome a entrada inválida para evitar loop infinito
-            }
-        }
-    }
-    
-    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
-    private static void configurarNomes(List<Jogador> jogadores) {
-        System.out.println("Como se chama cada jogador?");
-        for (Jogador jogador : jogadores) {
-            System.out.printf("Qual é o nome do %s%d° jogador%s? (Se deixar vazio o nome padrão '%s' será usado)%n", 
-                jogador.getCor(), jogador.getIdJogador() + 1, ANSI_RESET, jogador.getNome());
-
-            String nome = scanner.nextLine().trim();
-            if (!nome.isEmpty()) {
-                jogador.setNome(nome);
-            }
-        }
-    }
-
-    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
-    private static void mostrarJogadores(List<Jogador> jogadores) {
-        System.out.println("Jogadores");
-        for (Jogador jogador : jogadores) {
-            String mostrarJogador = String.format("%d° jogador: %s%s%s", 
-                jogador.getIdJogador() + 1, jogador.getCor(), jogador.getNome(), ANSI_RESET);
-            System.out.println(mostrarJogador);
-        }
-    }
-    
-    private static void iniciarJogoUX() {
-        System.out.println("(Pressione enter para começar o jogo)");
-        scanner.nextLine();
         System.out.print(CLEAR_SCREEN);
+
+        // 2. Configuração do Tabuleiro (Tamanho)
+        int numCasas = lerInteiro("Quantas casas o tabuleiro terá? (Mínimo recomendado: 15)", 10, 100);
+        
+        // 3. Configuração dos Jogadores (Quantidade)
+        int numJogadores = lerInteiro("Quantos jogadores irão participar? (2 a 6)", 2, 6);
+
+        // 4. CHAMADAS AO FACADE (Delega a complexidade para a classe Jogo)
+        // O Jogo agora orquestra a criação do Tabuleiro e dos Jogadores (via Factory)
+        jogo.configTabuleiro(numCasas); 
+        jogo.config(numJogadores);     
+        
+        System.out.print(CLEAR_SCREEN);
+        System.out.println("=== CONFIGURAÇÃO CONCLUÍDA ===");
+        jogo.printTabuleiro(); // Mostra o mapa do tabuleiro criado
+        
+        // 5. INÍCIO DO JOGO
+        // O loop principal agora vive dentro de jogo.start()
+        jogo.start();
+
+        // 6. RELATÓRIO FINAL
+        reporteFinal(jogo.getVencedor(), jogo.getJogadores());
     }
 
-    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
-    private static Jogador executarLoopPrincipal(Jogo jogo, List<Jogador> jogadores) {
-        if (jogo instanceof JogoDebug) { // Lógica condicional isolada
-            System.out.println("\nModo Debug\n(Você pode escolher a posição do jogador em vez de rolar dados)\n");
-        }
-        
-        int countRodadas = 1;
-        Jogador vencedor = null;
-        boolean continuar = true;
-        
-        while (continuar) { // Loop de Rodadas
-            System.out.println("\nRodada " + countRodadas);
-            
-            for (Jogador jogador : jogadores) { // Loop de Jogadores
-                // DELEGA A LÓGICA DO TURNO E VERIFICA A VITÓRIA
-                if (executarTurno(jogador, jogo, jogadores)) { 
-                    vencedor = jogador;
-                    continuar = false;
-                    break; // Sai do loop de jogadores
-                }
-                
-                mostrarPosicoes(jogadores); // I/O isolada
-            }
-            
-            if (continuar) { // Lógica de fim de rodada
-                System.out.println("\n" + countRodadas + "° Rodado finaliza!\n(Pressione enter para ir para proxima)");
-                scanner.nextLine();
-                System.out.print(CLEAR_SCREEN);
-                countRodadas++;
-            }
-        }
-        return vencedor;
-    }
-    
-    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
-    private static boolean executarTurno(Jogador jogador, Jogo jogo, List<Jogador> jogadores) {
-        System.out.println("\nVez do jogador " + jogador.getCor() + jogador.getNome() + ANSI_RESET + " de jogar");
-        
-        if (jogo instanceof JogoNormal) { // Condicional 1
-            System.out.println("Role seus dados " + EMOJI_DADO + EMOJI_DADO + "\n(Pressione enter para rolar)");
-            scanner.nextLine();
-        }
-
-        if (jogador.getPerdeRodada()) { // Condicional 2 (Pode jogar)
-            moverJogador(jogador, jogo, jogadores); // Movimento delegado
-        } else {
-            System.out.println("Jogador " + jogador.getCor() + jogador.getNome() + ANSI_RESET + " não pode jogar nessa rodada.");
-            jogador.setPerdeRodada(true);
-        }
-        
-        // Condicional de vitória
-        if (jogador.getPosicao() >= Tabuleiro.TOTAL_CASAS) { 
-            System.out.printf("%nJogador %s%s%s Venceu %s", jogador.getCor(), jogador.getNome(), ANSI_RESET, EMOJI_BANDEIRA);
-            return true;
-        }
-        return false;
-    }
-    
-    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
-    private static void moverJogador(Jogador jogador, Jogo jogo, List<Jogador> jogadores) {
-        if (jogo instanceof JogoNormal) { // Condicional 1: Movimento Normal (Dados)
-            int[] dados = jogador.jogarDados();
-            int passos = dados[0] + dados[1];
-            System.out.printf("%s Dado1: %d %n%s Dado2: %d %n%s Passos: %d", EMOJI_DADO, dados[0], EMOJI_DADO, dados[1], EMOJI_PESSOA_ANDANDO, passos);
-            jogo.getTabuleiro().moverJogador(jogador, passos, jogadores, jogo);
-        } else { // Condicional 2: Movimento Debug (Posição Manual)
-            System.out.println("Digite uma posição para o jogador ir");
-            // Adicionado validação robusta para evitar InputMismatchException
-            if (scanner.hasNextInt()) { 
-                int posicao =  scanner.nextInt();
-                scanner.nextLine();
-                jogo.getTabuleiro().moverJogador(jogador, posicao, jogadores, jogo);
-            } else {
-                 System.out.println("Entrada inválida para a posição. Movimento ignorado.");
-                 scanner.nextLine();
-            }
-        }
-    }
-    
-    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
-    private static void mostrarPosicoes(List<Jogador> jogadores) {
-        System.out.println("\n\nPosição de cada jogador");
-        for (Jogador jogadorMostrado : jogadores) {
-            System.out.printf("%s%s%s: %d%n", jogadorMostrado.getCor(), 
-                jogadorMostrado.getNome(), ANSI_RESET, jogadorMostrado.getPosicao());
-        }
-    }
-    
-    // ✅ CORREÇÃO: Alterado o tipo do parâmetro de ArrayList<Jogador> para List<Jogador>
-    private static void mostrarPlacar(Jogador vencedor, List<Jogador> jogadores) {
-        if (vencedor == null) {
-            System.out.println("\n\nO jogo terminou sem um vencedor claro.");
-            return;
-        }
-        
-        System.out.println("\n\nPlacar");
-        int posicaoFinalExibida = Math.min(vencedor.getPosicao(), Tabuleiro.TOTAL_CASAS);
-        
-        // Exibição do Vencedor
-        System.out.printf("Jogador Vencedor %s%s%s %s: %s Jogadas %d %s Posição: %d%n", 
-            vencedor.getCor(), vencedor.getNome(), ANSI_RESET, EMOJI_TROFEU, 
-            EMOJI_PASSOS, vencedor.getJogadas(), EMOJI_ALFINETE, posicaoFinalExibida);
-        
-        // Exibição dos demais jogadores
-        for (Jogador jogador : jogadores) {
-            if (!(jogador.equals(vencedor))) {
-                System.out.printf("Jogador %s%s%s: %s Jogadas %d %s Posição %d%n", // Adicionado %n para quebrar linha
-                    jogador.getCor(), jogador.getNome(), ANSI_RESET, EMOJI_PASSOS, 
-                    jogador.getJogadas(), EMOJI_ALFINETE, jogador.getPosicao());
-            }
-        }
-    }
-
+    /**
+     * Menu Principal para seleção do tipo de Jogo.
+     */
     public static Jogo menu() {
-        String tracos = "-".repeat(18);
-        String linhaSI = String.format("+%s+", tracos);
-        String titulo = "SEJA BEM VINDO";
-        String linhaMeio = String.format("|  %s  |", titulo);
-        String cabecalho = String.format("%s%n%s%n%s", linhaSI, linhaMeio, linhaSI);
-        String opcao1 = String.format("|%s1 - Jogar%s|", " ".repeat(4), " ".repeat(5));
-        String opcao2 = String.format("|%s2 - Debug%s|", " ".repeat(4), " ".repeat(5));
-        String menu = String.format("%s%n%s%n%s%n%s", cabecalho, opcao1, opcao2, linhaSI);
-        System.out.println(menu);
+        System.out.println("+" + "-".repeat(18) + "+");
+        System.out.println("|  SEJA BEM VINDO  |");
+        System.out.println("+" + "-".repeat(18) + "+");
+        System.out.println("|    1 - Jogar     |");
+        System.out.println("|    2 - Debug     |");
+        System.out.println("+" + "-".repeat(18) + "+");
 
         while (true) {
-            System.out.println("Qual opção voçê quer?\n");
+            int opcao = lerInteiro("Qual opção você deseja?", 1, 2);
+            if (opcao == 1) return new JogoNormal();
+            if (opcao == 2) return new JogoDebug();
+        }
+    }
 
-            int opcao = Integer.parseInt(scanner.next());
+    /**
+     * Exibe o placar e estatísticas ao final da partida.
+     */
+    public static void reporteFinal(Jogador vencedor, List<Jogador> jogadores) {
+        if (vencedor != null) {
+            System.out.println("\n" + "=".repeat(30));
+            System.out.printf("%s %s %s VENCEU O JOGO! %s%n", EMOJI_TROFEU, vencedor.getNome(), EMOJI_TROFEU, ANSI_RESET);
+            System.out.println("=".repeat(30));
+            
+            for (Jogador j : jogadores) {
+                System.out.printf("Relatório do Jogador %s%s%s:%n", j.getCor(), j.getNome(), ANSI_RESET);
+                System.out.printf("  - %s Jogadas: %d%n", EMOJI_PASSOS, j.getJogadas());
+                System.out.printf("  - %s Posição Final: %d%n", EMOJI_ALFINETE, j.getPosicao());
+                System.out.printf("  - Moedas acumuladas: %d%n", j.getMoedas());
+                System.out.println("-".repeat(20));
+            }
+        }
+    }
 
-            if (opcao == 1) {
-                // ✅ CORREÇÃO: Retorno imediato, removendo a variável 'jogo'
-                return new JogoNormal(); 
-            } else if (opcao == 2) {
-                // ✅ CORREÇÃO: Retorno imediato, removendo a variável 'jogo'
-                return new JogoDebug();
-            } else {
-                System.out.println("Valor invalido! Digite novamente.\n");
+    /**
+     * Método auxiliar para ler inteiros com validação, evitando erros de buffer.
+     */
+    private static int lerInteiro(String mensagem, int min, int max) {
+        while (true) {
+            try {
+                System.out.println(mensagem);
+                int valor = Integer.parseInt(scanner.nextLine());
+                if (valor >= min && valor <= max) return valor;
+                System.out.printf("Por favor, digite um valor entre %d e %d.%n", min, max);
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida! Digite um número inteiro.");
             }
         }
     }
