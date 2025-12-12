@@ -1,10 +1,12 @@
 package com.faculdade.jogador;
 
-import com.faculdade.controle.Jogo;
-
-
 public abstract class Jogador {
 
+    // NOVO: Constantes para os tipos de jogador (centralização de strings).
+    public static final String TIPO_NORMAL = "Normal";
+    public static final String TIPO_AZARADO = "Azarado";
+    public static final String TIPO_SORTUDO = "Sortudo";
+    
     protected int idJogador;
     protected String cor;
     protected String nome;
@@ -12,11 +14,13 @@ public abstract class Jogador {
     protected int quantidadePassos;
     protected boolean podeJogar;
     
-    public Jogador(int idJogador, String cor, String nome) {
+    protected Jogador(int idJogador, String cor, String nome) {
         this.idJogador=idJogador;
         this.cor=cor;
         this.nome=nome;
         this.podeJogar = true;
+        
+        this.posicao = 0;
     }
 
     public int getIdJogador(){

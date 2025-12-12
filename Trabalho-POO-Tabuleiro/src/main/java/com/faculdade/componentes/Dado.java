@@ -1,9 +1,11 @@
 package com.faculdade.componentes;
-import java.util.Random;
 
 public class Dado {
-    private static Random random = new Random();
+    
+    private static final java.util.Random RANDOM = new java.util.Random(); 
+
     public static int rolarDados() {
-        return random.nextInt(6) + 1;
+        
+        return RANDOM.nextInt(6) + 1; 
     }
 }

@@ -8,15 +8,20 @@ public class JogadorSortudo extends Jogador {
         super(idJogador, cor, nome);
     }
     
-    @Override
-    public int[] jogarDados() {
+    private int[] rolarDadosSortudo() {
         int[] dados = new int[2];
         int soma;
-        do{
+        do {
             dados[0] = Dado.rolarDados();
             dados[1] = Dado.rolarDados();
             soma = dados[0] + dados[1];
         } while (soma < 7);
+        return dados;
+    }
+    
+    @Override
+    public int[] jogarDados() {
+        int[] dados = rolarDadosSortudo(); // Chama o método auxiliar
         incrementarJogadas();
         return dados;
     }
